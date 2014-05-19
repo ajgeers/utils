@@ -163,19 +163,6 @@ def countregions(polydata):
     return connect.GetNumberOfExtractedRegions()
 
 
-def slicedataset(dataset, point, normal):
-    """Slice through a vtkDataSet object with a plane defined by point and
-    normal."""
-    cutplane = vtk.vtkPlane()
-    cutplane.SetOrigin(point)
-    cutplane.SetNormal(normal)
-    cutter = vtk.vtkCutter()
-    cutter.SetInput(dataset)
-    cutter.SetCutFunction(cutplane)
-    cutter.Update()
-    return cutter.GetOutput()
-
-
 def delaunay2d(points):
     """Construct a 2D Delaunay triangulation from a set of points."""
     delaunay = vtk.vtkDelaunay2D()
@@ -354,6 +341,19 @@ def probe(source, probe):
     prober.SetSource(source)
     prober.Update()
     return prober.GetOutput()
+
+
+def slicedataset(dataset, point, normal):
+    """Slice through a vtkDataSet object with a plane defined by point and
+    normal."""
+    cutplane = vtk.vtkPlane()
+    cutplane.SetOrigin(point)
+    cutplane.SetNormal(normal)
+    cutter = vtk.vtkCutter()
+    cutter.SetInput(dataset)
+    cutter.SetCutFunction(cutplane)
+    cutter.Update()
+    return cutter.GetOutput()
 
 
 def surfacearea(surface):
