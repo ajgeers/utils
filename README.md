@@ -43,7 +43,7 @@ import vtklib
 # Slice an unstructured grid with the xy-plane at z=0,
 # triangulate the slice and write it to disk.
 cfd = iolib.readvtu('cfd.vtu')
-xyslice = vtklib.cutdataset(cfd, [0, 0, 0], [0, 0, 1])
+xyslice = vtklib.slicedataset(cfd, [0, 0, 0], [0, 0, 1])
 xyslice = vtklib.triangulate(xyslice)
 iolib.writevtp(xyslice, 'xyslice.vtp')
 ```
