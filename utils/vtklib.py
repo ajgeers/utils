@@ -163,8 +163,8 @@ def countregions(polydata):
     return connect.GetNumberOfExtractedRegions()
 
 
-def cutdataset(dataset, point, normal):
-    """Cut through a vtkDataSet object with a plane defined by point and
+def slicedataset(dataset, point, normal):
+    """Slice through a vtkDataSet object with a plane defined by point and
     normal."""
     cutplane = vtk.vtkPlane()
     cutplane.SetOrigin(point)
