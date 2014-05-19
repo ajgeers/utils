@@ -5,7 +5,10 @@ Number of data classes = 7
 Nature of data = qualitative
 Color scheme = Set1
 
+Additionally, the colors 'white' and 'black' are defined.
+
 """
+
 
 def red():
     """The color red.
@@ -88,4 +91,29 @@ def brown():
 
     """
     rgb = [166, 86, 40]
+    return [i / 255. for i in rgb]
+
+
+def white():
+    """The color white.
+
+    HEX = #FFFFFF
+    RGB = 255, 255, 255
+    CMYK = 0, 0, 0, 0
+
+    """
+    rgb = [255, 255, 255]
+    return [i / 255. for i in rgb]
+
+
+
+def black():
+    """The color white.
+
+    HEX = #000000
+    RGB = 0, 0, 0
+    CMYK = 0, 0, 0, 1
+
+    """
+    rgb = [0, 0, 0]
     return [i / 255. for i in rgb]
