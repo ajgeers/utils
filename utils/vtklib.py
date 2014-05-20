@@ -343,6 +343,87 @@ def probe(source, probe):
     return prober.GetOutput()
 
 
+def renderer(objectdicts, label=''):
+    """Render several polydata in window.
+
+    Args:
+        objectdicts:
+            List of Python dictionaries; one dictionary per polydata.
+            The dictionaries can have three keys:
+            1. polydata (required key; if not provided, dict will be skipped)
+            2. color (optional; provide color in RGB (range: 0 - 1);
+                default is [0, 0, 0])
+            3. opacity (optional; 0 is fully transparent, 1 is fully opaque;
+                default is 1)
+        label: String to annotate the render window.
+
+    Returns:
+        vtkRenderWindow displaying polydata.
+
+    Example usage:
+        renderer([dict(polydata=surface, opacity=0.3),
+                  dict(polydata=centerline, color=[1, 1, 1])],
+                 label='All together!')
+
+    TODO:
+        * Close window with key press.
+        * Place window in foreground.
+        * When calling function in for-loop, window doesn't seem properly closed
+          at end of iteration.
+
+    """
+    # Initialize renderer window
+    ren = vtk.vtkRenderer()
+    renWin = vtk.vtkRenderWindow()
+    renWin.AddRenderer(ren)
+    iren = vtk.vtkRenderWindowInteractor()
+    style = vtk.vtkInteractorStyleTrackballCamera()
+    iren.SetInteractorStyle(style)
+    iren.SetRenderWindow(renWin)
+
+    # Add each actor
+    for objectdict in objectdicts:
+
+        # If dict item exists use specified value, otherwise use default value
+        polydata = objectdict.get('polydata')  # default is None
+        color = objectdict.get('color', [1, 1, 1])
+        opacity = objectdict.get('opacity', 1)
+
+        if not polydata:  # only add actor if polydata is specified
+            continue
+
+        mapper = vtk.vtkPolyDataMapper()
+        mapper.SetInput(polydata)
+        mapper.ScalarVisibilityOff()
+        actor = vtk.vtkActor()
+        actor.GetProperty().SetColor(color)
+        actor.GetProperty().SetOpacity(opacity)
+        actor.SetMapper(mapper)
+        ren.AddActor(actor)
+
+    # Add text actor
+    if label:
+        txt = vtk.vtkTextActor()
+        txt.SetInput(label)
+        txtprop=txt.GetTextProperty()
+        txtprop.SetFontFamilyToArial()
+        txtprop.SetFontSize(18)
+        txtprop.SetColor(0, 0, 0)
+        txt.SetDisplayPosition(20, 30)
+        ren.AddActor(txt)
+
+    # Renderer (window) specifications
+    ren.SetBackground(82/255., 87/255., 110/255.)  # Paraview default
+    renWin.SetSize(640, 480)
+    ren.ResetCamera()
+    ren.GetActiveCamera().Zoom(1)
+
+    # Start rendering
+    iren.Initialize()
+    renWin.Render()
+    iren.Start()
+
+
 def slicedataset(dataset, point, normal):
     """Slice through a vtkDataSet object with a plane defined by point and
     normal."""
