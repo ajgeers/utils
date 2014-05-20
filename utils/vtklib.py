@@ -372,7 +372,7 @@ def renderer(objectdicts, label=''):
           at end of iteration.
 
     """
-    # Initialize renderer window
+    # Initialize render window
     ren = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
