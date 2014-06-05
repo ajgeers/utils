@@ -299,7 +299,7 @@ def initializearray(polydata, arrayname, isscalar=True, ispointdata=True):
     return array
 
 
-def planeclip(polydata, point, normal, insideout=1):
+def planeclip(polydata, point, normal, insideout=True):
     """Clip polydata with a plane defined by point and normal. Change clipping
     direction with 'insideout' argument."""
     clipplane = vtk.vtkPlane()
@@ -308,7 +308,7 @@ def planeclip(polydata, point, normal, insideout=1):
     clipper = vtk.vtkClipPolyData()
     clipper.SetInput(polydata)
     clipper.SetClipFunction(clipplane)
-    if insideout == 1:
+    if insideout:
         clipper.InsideOutOn()
     clipper.Update()
     return clipper.GetOutput()
@@ -422,6 +422,29 @@ def renderer(objectdicts, label=''):
     iren.Initialize()
     renWin.Render()
     iren.Start()
+
+
+def scalarclip(polydata, arrayname, scalarvalue, insideout=True,
+               ispointdata=True):
+    """Clip vtkPolyData returning regions with value of array above a
+    specified value."""
+    clipper = vtk.vtkClipPolyData()
+    clipper.SetInput(polydata)
+    if ispointdata:  # array is pointdata
+        clipper.SetInputArrayToProcess(0, 0, 0,
+                                       vtk.vtkDataObject.
+                                       FIELD_ASSOCIATION_POINTS,
+                                       arrayname)
+    else:  # array is celldata
+        clipper.SetInputArrayToProcess(0, 0, 0,
+                                       vtk.vtkDataObject.
+                                       FIELD_ASSOCIATION_CELLS,
+                                       arrayname)
+    clipper.SetValue(scalarvalue)
+    if insideout:  # inverse clipping direction
+        clipper.InsideOutOn()
+    clipper.Update()
+    return clipper.GetOutput()
 
 
 def slicedataset(dataset, point, normal):
