@@ -299,6 +299,27 @@ def initializearray(polydata, arrayname, isscalar=True, ispointdata=True):
     return array
 
 
+def normalextrusion(polydata, extrusionlength=0.0, normalarrayname='Normals'):
+    """Extrude points a specified length along the normals"""
+    numberofpoints = polydata.GetNumberOfPoints()
+    normalarray = polydata.GetPointData().GetArray(normalarrayname)
+    newpoints = vtk.vtkPoints()
+    newpoints.SetNumberOfPoints(numberofpoints)
+    for i in range(numberofpoints):
+        normal = [normalarray.GetComponent(i, 0),
+                  normalarray.GetComponent(i, 1),
+                  normalarray.GetComponent(i, 2)]
+        point = polydata.GetPoint(i)
+        newpoint = [point[0] + extrusionlength * normal[0],
+                    point[1] + extrusionlength * normal[1],
+                    point[2] + extrusionlength * normal[2]]
+        if i == 0:
+            print point, normal, newpoint
+        newpoints.SetPoint(i, newpoint)
+    polydata.SetPoints(newpoints)
+    return polydata
+
+
 def planeclip(polydata, point, normal, insideout=True):
     """Clip polydata with a plane defined by point and normal. Change clipping
     direction with 'insideout' argument."""
