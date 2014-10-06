@@ -49,7 +49,7 @@ def project(vector1, vector2):
             vector1component * vector2norm[2]]
 
 
-def tangential(vector, normal):
+def tangent(vector, normal):
     """Tangential component of vector for given normal."""
     return [vector[0] - dot(vector, normal) * normal[0],
             vector[1] - dot(vector, normal) * normal[1],
