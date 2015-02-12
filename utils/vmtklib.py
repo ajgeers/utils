@@ -544,8 +544,8 @@ def vmtkdistancetocenterlines(surface, centerlines):
     """Compute distance from the surface to the centerlines.
 
     Args:
-        surface = Surface mesh of vascular geometry.
-        centerlines = Centerlines corresponding to surface.
+        surface: Surface mesh of vascular geometry.
+        centerlines: Centerlines corresponding to surface.
 
     Returns:
         Surface with DistanceToCenterlines as pointdata.
@@ -559,13 +559,16 @@ def vmtkdistancetocenterlines(surface, centerlines):
     return distance.Surface
 
 
-def vmtkflowextensions(surface, interactive=1, extensionlength=10):
+def vmtkflowextensions(surface, interactive=1, extensionlength=10,
+                       transitionratio=.25):
     """Extrude inlets and outlets of a vascular geometry.
 
     Args:
-        surface = Surface mesh of vascular geometry.
+        surface: Surface mesh of vascular geometry.
         interactive (bool): Choose inlets/outlets to be extruded.
         extensionlength: Length of extrusions.
+        transitionratio: Rate of transition from model section to circular
+        section.
 
     Returns:
         Surface with extruded inlets/outlets.
@@ -574,7 +577,7 @@ def vmtkflowextensions(surface, interactive=1, extensionlength=10):
     extender = vmtkscripts.vmtkFlowExtensions()
     extender.Surface = surface
     extender.ExtensionMode = 'boundarynormal'
-    extender.TransitionRatio = .25
+    extender.TransitionRatio = transitionratio
     extender.Interactive = interactive
     extender.ExtensionLength = extensionlength
     extender.Execute()
