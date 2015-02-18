@@ -353,7 +353,7 @@ def vmtkcenterlinemerge(centerlines, length=.1):
 
     Args:
         centerlines: Centerlines split into branches.
-        length: Space between centerline points after resampling.
+        length: Distance between centerline points after resampling.
 
     Returns:
         Centerlines with only one centerline branch per vessel tree branch. The
@@ -485,9 +485,9 @@ def vmtkcenterlinesections(surface, centerlines):
     Returns:
         Polydata with one cross section per branch of each bifurcation.
         Celldata (selection):
-            BifurcationSectionArea: Section area.
-            BifurcationSectionMinSize: Minimum diameter of section.
-            BifurcationSectionMaxSize: Maximum diameter of section.
+            CenterlineSectionArea: Section area.
+            CenterlineSectionMinSize: Minimum diameter of section.
+            CenterlineSectionMaxSize: Maximum diameter of section.
 
     """
     sectioner = vmtkscripts.vmtkCenterlineSections()
