@@ -683,6 +683,24 @@ def vmtkmeshreader(path):
     return reader.Mesh
 
 
+def vmtkmeshtosurface(mesh, cleanoutput=1):
+    """Convert a mesh to a surface by throwing out volume elements and (optionally) the relative points
+
+    Args:
+        mesh: Volumetric mesh.
+        cleanoutput (bool): Remove unused points.
+
+    Returns:
+        vtkPolyData object.
+
+    """
+    extractor = vmtkscripts.vmtkMeshToSurface()
+    extractor.Mesh = mesh
+    extractor.CleanOutput = cleanoutput
+    extractor.Execute()
+    return extractor.Surface
+
+
 def vmtkmeshvectorfromcomponents(mesh, vectorname='Velocity',
                                  componentsnames=['VelocityX', 'VelocityY',
                                  'VelocityZ'], removecomponents=False):
