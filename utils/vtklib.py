@@ -299,6 +299,18 @@ def initializearray(polydata, arrayname, isscalar=True, ispointdata=True):
     return array
 
 
+def multiplyarray(polydata, inputarray, outputarray, value):
+    """Multiply inputarray of polydata by specified value and store in
+    outputarray."""
+    calc = vtk.vtkArrayCalculator()
+    calc.SetInput(polydata)
+    calc.AddScalarArrayName(inputarray, 0)
+    calc.SetFunction('{0} * {1}'.format(inputarray, value))
+    calc.SetResultArrayName(outputarray)
+    calc.Update()
+    return calc.GetOutput()
+
+
 def normalextrusion(polydata, extrusionlength=0.0, normalarrayname='Normals'):
     """Extrude points a specified length along the normals"""
     numberofpoints = polydata.GetNumberOfPoints()
