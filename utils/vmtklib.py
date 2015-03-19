@@ -35,8 +35,8 @@ def vmtkbifurcationreferencesystems(centerlines):
 
 
 def vmtkbifurcationsections(surface, centerlines, distance=1):
-    """Compute branch sections located a fixed number of maximally inscribed
-    spheres away from each bifurcation.
+    """Compute sections located a fixed number of maximally inscribed
+    sphere radii away from each bifurcation.
 
     Args:
         surface: Surface split into branches.
@@ -286,6 +286,37 @@ def vmtkbranchpatching(surface, longitudinalpatchsize=1.0,
     patcher.Execute()
     #return (patcher.Surface, patcher.PatchedData)
     return patcher.Surface
+
+
+def vmtkbranchsections(surface, centerlines, interval=1):
+    """Compute sections at specified intervals (in maximally inscribed sphere
+    radii units) labeled by the GroupId of the corresponding branch.
+
+    Args:
+        surface: Surface split into branches.
+        centerlines: Centerlines split into branches.
+        interval: Distance between sections in maximally inscribed sphere radii
+            units.
+
+    Returns:
+        Polydata with sections.
+        Celldata (selection):
+            BranchSectionGroupIds: GroupId of corresponding branch
+            BranchSectionDistanceSpheres: Distance along the branch in maximally
+                inscribed sphere radii
+
+    """
+    sectioner = vmtkscripts.vmtkBranchSections()
+    sectioner.Surface = surface
+    sectioner.Centerlines = centerlines
+    sectioner.NumberOfDistanceSpheres = distance
+    sectioner.RadiusArrayName = 'MaximumInscribedSphereRadius'
+    sectioner.GroupIdsArrayName = 'GroupIds'
+    sectioner.CenterlineIdsArrayName = 'CenterlineIds'
+    sectioner.TractIdsArrayName = 'TractIds'
+    sectioner.BlankingArrayName = 'Blanking'
+    sectioner.Execute()
+    return sectioner.BranchSections
 
 
 def vmtkcenterlineattributes(centerlines):
