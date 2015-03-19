@@ -12,13 +12,13 @@ import math
 import vtk
 
 
-def addtoarray(polydata, inputarray, outputarray, value):
+def addtoarray(polydata, inputarrayname, outputarrayname, value):
     """Add value to inputarray of polydata and store in outputarray."""
     calc = vtk.vtkArrayCalculator()
     calc.SetInput(polydata)
-    calc.AddScalarArrayName(arrayname, 0)
-    calc.SetFunction('{0} + {1}'.format(inputarray, value))
-    calc.SetResultArrayName(outputarray)
+    calc.AddScalarArrayName(inputarrayname, 0)
+    calc.SetFunction('{0} + {1}'.format(inputarrayname, value))
+    calc.SetResultArrayName(outputarrayname)
     calc.Update()
     return calc.GetOutput()
 
