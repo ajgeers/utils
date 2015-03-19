@@ -728,6 +728,30 @@ def vmtkmeshvectorfromcomponents(mesh, vectorname='Velocity',
     return vectorer.Mesh
 
 
+def vmtkmeshwallshearrate(mesh, velocityarrayname='vel'):
+    """Compute wall shear rate from a velocity field
+
+    Args:
+        mesh: vtkUnstructuredGrid object.
+        velocityarrayname: Name of velocity array.
+
+    Returns:
+        vtkPolyData object with the surface of the mesh with the newly
+        created array named WallShearRate.
+
+    Note:
+        To obtain the wall shear stress, multiply WallShearRate by the
+        viscosity.
+
+    """
+    wsrfilter = vmtkscripts.vmtkMeshWallShearRate()
+    wsrfilter.Mesh = mesh
+    wsrfilter.VelocityArrayName = velocityarrayname
+    wsrfilter.WallShearRateArrayName = 'wsr'
+    wsrfilter.Execute()
+    return wsrfilter.Surface
+
+
 def vmtkmeshwriter(mesh, path):
     """Write a vtkUnstructuredGrid object to disk.
 
