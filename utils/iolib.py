@@ -59,15 +59,36 @@ def listdir(path, match='*', dirname=False, extension=False):
 
 
 def readvti(path):
-    """Read VTI-files, i.e. images in VTK XML format."""
+    """Read VTI-file, i.e. image in VTK XML format."""
     reader = vtk.vtkXMLImageDataReader()
     reader.SetFileName(path)
     reader.Update()
     return reader.GetOutput()
 
 
+def readvtk(path, datatype='polydata'):
+    """Read VTK-file.
+
+    Args:
+        path: Path to file.
+        type: 'imagedata', 'polydata', 'unstructeredgrid'
+
+    """
+    if datatype=='imagedata':
+        reader = vtk.vtkImageDataReader()
+    elif datatype=='polydata':
+        reader = vtk.vtkPolyDataReader()
+    elif datatype=='unstructeredgrid':
+        reader = vtk.vtkUnstructuredGridReader()
+    else:
+        print 'Invalid datatype'
+    reader.SetFileName(path)
+    reader.Update()
+    return reader.GetOutput()
+
+
 def readvtp(path, dataarrays=True):
-    """Read VTP-files, i.e. polydata in VTK XML format.
+    """Read VTP-file, i.e. polydata in VTK XML format.
 
     Args:
         dataarrays (bool): Include point and cell data.
@@ -88,7 +109,7 @@ def readvtp(path, dataarrays=True):
 
 
 def readvtu(path):
-    """Read VTU-files, i.e. unstructured grids in VTK XML format."""
+    """Read VTU-file, i.e. unstructured grid in VTK XML format."""
     reader = vtk.vtkXMLUnstructuredGridReader()
     reader.SetFileName(path)
     reader.Update()
