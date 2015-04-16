@@ -299,6 +299,16 @@ def initializearray(polydata, arrayname, isscalar=True, ispointdata=True):
     return array
 
 
+def labelregions(polydata):
+    """Label connected regions by assigning a 'RegionId' as pointdata."""
+    connect = vtk.vtkPolyDataConnectivityFilter()
+    connect.SetInput(polydata)
+    connect.SetExtractionModeToAllRegions()
+    connect.ColorRegionsOn()
+    connect.Update()
+    return connect.GetOutput()
+
+
 def multiplyarray(polydata, inputarray, outputarray, value):
     """Multiply inputarray of polydata by specified value and store in
     outputarray."""
