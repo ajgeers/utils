@@ -335,8 +335,6 @@ def normalextrusion(polydata, extrusionlength=0.0, normalarrayname='Normals'):
         newpoint = [point[0] + extrusionlength * normal[0],
                     point[1] + extrusionlength * normal[1],
                     point[2] + extrusionlength * normal[2]]
-        if i == 0:
-            print point, normal, newpoint
         newpoints.SetPoint(i, newpoint)
     polydata.SetPoints(newpoints)
     return polydata
