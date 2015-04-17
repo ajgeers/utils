@@ -132,6 +132,24 @@ def replacestring(lines, tag, value):
     return output
 
 
+def writepoints(points, filename):
+    """Write points as VTP-file."""
+    polydata = vtk.vtkPolyData()
+    cellarray = vtk.vtkCellArray()
+
+    for i in range(points.GetNumberOfPoints()):
+        cellarray.InsertNextCell(1)
+        cellarray.InsertCellPoint(i)
+
+    polydata.SetPoints(points)
+    polydata.SetVerts(cellarray)
+
+    writer = vtk.vtkXMLPolyDataWriter()
+    writer.SetFileName(filename)
+    writer.SetInput(polydata)
+    writer.Write()
+
+
 def writevti(image, path):
     """Write VTI-files, i.e. images in VTK XML format."""
     writer = vtk.vtkXMLImageDataWriter()
