@@ -534,26 +534,36 @@ def surfacescaling(polydata, scalefactor=1.0):
     return transformFilter.GetOutput()
 
 
-def threshold(polydata, arrayname, valuerange=[0, 1], iscelldata=True):
+def threshold(polydata, arrayname, valuerange=[0, 1], iscelldata=True,
+              allscalars=True):
     """Extract those cells from polydata whose pointdata/celldata values are
-    within a specified range. For pointdata, cells are included if values of all
-    cell points are within the range."""
-    thresholder = vtk.vtkThreshold()
-    thresholder.SetInput(polydata)
-    thresholder.ThresholdBetween(valuerange[0], valuerange[1])
+    within a specified range.
+
+    For pointdata, cells are included if scalar values of all cell points are
+    within the range (allscalars=True) or if the scalar value of at least one of
+    the cell points is within the range (allscalar=False).
+
+    """
+    thresholdfilter = vtk.vtkThreshold()
+    thresholdfilter.SetInput(polydata)
+    thresholdfilter.ThresholdBetween(valuerange[0], valuerange[1])
     if iscelldata:
-        thresholder.SetInputArrayToProcess(0, 0, 0,
+        thresholdfilter.SetInputArrayToProcess(0, 0, 0,
                                            vtk.vtkDataObject.
                                            FIELD_ASSOCIATION_CELLS, arrayname)
     else:
-        thresholder.SetInputArrayToProcess(0, 0, 0,
+        thresholdfilter.SetInputArrayToProcess(0, 0, 0,
                                            vtk.vtkDataObject.
                                            FIELD_ASSOCIATION_POINTS, arrayname)
-    thresholder.Update()
-    surfer = vtk.vtkDataSetSurfaceFilter()
-    surfer.SetInput(thresholder.GetOutput())
-    surfer.Update()
-    return surfer.GetOutput()
+    if allscalars:
+        thresholdfilter.AllScalarsOn()
+    else
+        thresholdfilter.AllScalarsOff()
+    thresholdfilter.Update()
+    surfacefilter = vtk.vtkDataSetSurfaceFilter()
+    surfacefilter.SetInput(thresholdfilter.GetOutput())
+    surfacefilter.Update()
+    return surfacefilter.GetOutput()
 
 
 def triangulate(surface):
