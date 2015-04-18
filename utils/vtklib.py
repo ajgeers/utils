@@ -557,7 +557,7 @@ def threshold(polydata, arrayname, valuerange=[0, 1], iscelldata=True,
                                            FIELD_ASSOCIATION_POINTS, arrayname)
     if allscalars:
         thresholdfilter.AllScalarsOn()
-    else
+    else:
         thresholdfilter.AllScalarsOff()
     thresholdfilter.Update()
     surfacefilter = vtk.vtkDataSetSurfaceFilter()
