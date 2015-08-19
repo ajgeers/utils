@@ -155,6 +155,27 @@ def cleanpolydata(polydata):
     return cleaner.GetOutput()
 
 
+def coordtopoints(coord, output_polydata=True):
+    """Create (polydata of) points from list of point coordinates"""
+    numberofpoints = len(coord)
+    points = vtk.vtkPoints()
+    points.SetNumberOfPoints(numberofpoints)
+    if output_polydata:
+        output = vtk.vtkPolyData()
+        cellarray = vtk.vtkCellArray()
+        for i in range(numberofpoints):
+            points.SetPoint(i, coord[i])
+            cellarray.InsertNextCell(1)
+            cellarray.InsertCellPoint(i)
+        output.SetPoints(points)
+        output.SetVerts(cellarray)
+    else:
+        for i in range(numberofpoints):
+            points.SetPoint(i, coord[i])
+        output = points
+    return output
+
+
 def countregions(polydata):
     """Count number of disconnected regions in polydata."""
     connect = vtk.vtkPolyDataConnectivityFilter()
