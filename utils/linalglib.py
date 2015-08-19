@@ -1,4 +1,4 @@
-"""Module for linear algebra operations."""
+"""Module for linear algebra operations without numpy."""
 
 import math
 
