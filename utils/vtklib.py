@@ -171,11 +171,6 @@ def delaunay2d(points):
     return delaunay.GetOutput()
 
 
-def pointdistance(point1, point2):
-    """Compute Euclidean distance between two points."""
-    return math.sqrt(vtk.vtkMath.Distance2BetweenPoints(point1, point2))
-
-
 def extractboundaryedge(surface, feature_edges=False):
     """Extract boundary edges of a surface mesh."""
     edge = vtk.vtkFeatureEdges()
@@ -361,6 +356,11 @@ def pointdatatocelldata(polydata):
     converter.SetInput(polydata)
     converter.Update()
     return converter.GetOutput()
+
+
+def pointdistance(point1, point2):
+    """Compute Euclidean distance between two points."""
+    return math.sqrt(vtk.vtkMath.Distance2BetweenPoints(point1, point2))
 
 
 def pointnormals(surface):
