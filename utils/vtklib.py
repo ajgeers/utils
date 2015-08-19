@@ -395,6 +395,16 @@ def pointnormals(surface):
     return normals.GetOutput()
 
 
+def pointsource(center=[0, 0, 0], radius=1.0, numberofpoints=100):
+    """Create a random cloud of points"""
+    points = vtk.vtkPointSource()
+    points.SetNumberOfPoints(numberofpoints)
+    points.SetCenter(center)
+    points.SetRadius(radius)
+    points.Update()
+    return points.GetOutput()
+
+
 def probe(source, probe):
     """Compute point attributes (e.g. scalars, vectors, etc.) at all points of
     the probe object by interpolating the source data."""
