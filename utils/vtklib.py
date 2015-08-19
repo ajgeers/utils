@@ -315,6 +315,15 @@ def initializearray(polydata, arrayname, isscalar=True, ispointdata=True):
     return array
 
 
+def insidepoints(points, surface):
+    """Mark points as to whether they are inside a closed surface"""
+    marker = vtk.vtkSelectEnclosedPoints()
+    marker.SetInput(points)
+    marker.SetSurface(surface)
+    marker.Update()
+    return marker.GetOutput()
+
+
 def labelregions(polydata):
     """Label connected regions by assigning a 'RegionId' as pointdata."""
     connect = vtk.vtkPolyDataConnectivityFilter()
