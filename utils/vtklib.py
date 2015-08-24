@@ -23,11 +23,11 @@ def addtoarray(polydata, inputarrayname, outputarrayname, value):
     return calc.GetOutput()
 
 
-def appendfilter(polydata1, polydata2):
-    """Append two polydatas."""
+def appendfilter(polydatas):
+    """Append list of polydatas."""
     appender = vtk.vtkAppendPolyData()
-    appender.AddInput(polydata1)
-    appender.AddInput(polydata2)
+    for polydata in polydatas:
+        appender.AddInput(polydata)
     appender.Update()
     return appender.GetOutput()
 
