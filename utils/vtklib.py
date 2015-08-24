@@ -315,11 +315,12 @@ def initializearray(polydata, arrayname, isscalar=True, ispointdata=True):
     return array
 
 
-def insidepoints(points, surface):
+def insidepoints(points, surface, tolerance=0.001):
     """Mark points as to whether they are inside a closed surface"""
     marker = vtk.vtkSelectEnclosedPoints()
     marker.SetInput(points)
     marker.SetSurface(surface)
+    marker.SetTolerance(tolerance)
     marker.Update()
     return marker.GetOutput()
 
