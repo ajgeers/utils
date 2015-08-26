@@ -561,13 +561,15 @@ def surfacearea(surface):
     return properties.GetSurfaceArea()
 
 
-def surfacedistance(surface, referencesurface, distancearrayname='distance'):
+def surfacedistance(surface, referencesurface, distancearrayname='distance',
+                    signeddistance=False):
     """Calculate unsigned distance to the reference surface at each point of the
     input surface."""
     distance = vtk.vtkDistancePolyDataFilter()
     distance.SetInput(0, surface)
     distance.SetInput(1, referencesurface)
-    distance.SignedDistanceOff()
+    if signeddistance:
+        distance.SetSignedDistance(signeddistance)
     distance.Update()
     osurface = distance.GetOutput()
     osurface.GetPointData().GetArray('Distance').SetName(distancearrayname)
