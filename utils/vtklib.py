@@ -24,7 +24,7 @@ def addtoarray(polydata, inputarrayname, outputarrayname, value):
 
 
 def appendfilter(polydatas):
-    """Append list of polydatas."""
+    """Append list of polydata objects."""
     appender = vtk.vtkAppendPolyData()
     for polydata in polydatas:
         appender.AddInput(polydata)
@@ -190,6 +190,17 @@ def delaunay2d(points):
     delaunay.SetInput(points)
     delaunay.Update()
     return delaunay.GetOutput()
+
+
+def delaunay3d(points):
+    """Construct a 3D Delaunay triangulation from a set of points."""
+    delaunay = vtk.vtkDelaunay3D()
+    delaunay.SetInput(points)
+    delaunay.Update()
+    surface = vtk.vtkDataSetSurfaceFilter()
+    surface.SetInput(delaunay.GetOutput())
+    surface.Update()
+    return surface.GetOutput()
 
 
 def extractboundaryedge(surface, feature_edges=False):
