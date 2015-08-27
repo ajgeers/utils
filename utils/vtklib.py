@@ -405,13 +405,13 @@ def pointdistance(point1, point2):
     return math.sqrt(vtk.vtkMath.Distance2BetweenPoints(point1, point2))
 
 
-def pointnormals(surface):
+def pointnormals(surface, flipnormals=False):
     """Add point normals."""
     normals = vtk.vtkPolyDataNormals()
     normals.SetInput(surface)
-    normals.ComputePointNormalsOn()
-    normals.ComputeCellNormalsOff()
+    normals.AutoOrientNormalsOn()
     normals.SplittingOff()
+    normals.SetFlipNormals(flipnormals)
     normals.Update()
     return normals.GetOutput()
 
