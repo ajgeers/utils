@@ -588,6 +588,17 @@ def surfacescaling(polydata, scalefactor=1.0):
     return transformFilter.GetOutput()
 
 
+def surfacetranslation(polydata, translation=[0.0, 0.0, 0.0]):
+    """Translate a vtkPolyData object."""
+    transform = vtk.vtkTransform()
+    transform.Translate(translation)
+    transformFilter = vtk.vtkTransformFilter()
+    transformFilter.SetInput(polydata)
+    transformFilter.SetTransform(transform)
+    transformFilter.Update()
+    return transformFilter.GetOutput()
+
+
 def threshold(polydata, arrayname, valuerange=[0, 1], iscelldata=True,
               allscalars=True):
     """Extract those cells from polydata whose pointdata/celldata values are
