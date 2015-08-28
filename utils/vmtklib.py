@@ -938,7 +938,9 @@ def vmtksurfacedecimation(surface, target=.9):
 
 
 def vmtksurfacedistance(surface, referencesurface,
-                        distancearrayname='Distance'):
+                        distance_arrayname='distance',
+                        distancevector_arrayname='distance_vector',
+                        signeddistance_arrayname='signed_distance'):
     """Compute the pointwise minimum distance from a surface to a reference
     surface.
 
@@ -953,9 +955,9 @@ def vmtksurfacedistance(surface, referencesurface,
     distancer = vmtkscripts.vmtkSurfaceDistance()
     distancer.Surface = surface
     distancer.ReferenceSurface = referencesurface
-    distancer.DistanceArrayName = distancearrayname
-    distancer.DistanceVectorsArrayName = 'Distance'
-    distancer.SignedDistanceArrayName = ''
+    distancer.DistanceArrayName = distance_arrayname
+    distancer.DistanceVectorsArrayName = distancevector_arrayname
+    distancer.SignedDistanceArrayName = signeddistance_arrayname
     distancer.Execute()
     return distancer.Surface
 
