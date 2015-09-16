@@ -918,6 +918,33 @@ def vmtksurfacecenterlineprojection(surface, centerlines):
     return projection.Surface
 
 
+def vmtksurfacecurvature(surface, curvature_type='mean', absolute_curvature=0,
+                         median_filtering=0):
+    """Compute curvature of an input surface.
+
+    Args:
+        surface: Surface mesh.
+        curvature_type ('mean', 'gaussian', 'maximum', 'minimum'): Type of
+            curvature to compute.
+        absolute_curvature (bool): Output the absolute value of curvature.
+        median_filtering (bool): Output curvature after median filtering to
+            suppress numerical noise speckles.
+
+    Returns:
+        Surface with curvature variable.
+        Pointdata:
+            Curvature: Local surface curvature.
+
+    """
+    curvaturefilter = vmtkscripts.vmtkSurfaceCurvature()
+    curvaturefilter.Surface = surface
+    curvaturefilter.CurvatureType = curvature_type
+    curvaturefilter.AbsoluteCurvature = absolute_curvature
+    curvaturefilter.MedianFiltering = median_filtering
+    curvaturefilter.Execute()
+    return curvaturefilter.Surface
+
+
 def vmtksurfacedecimation(surface, target=.9):
     """Reduce the number of triangles in a surface.
 
