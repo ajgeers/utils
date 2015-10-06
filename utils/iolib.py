@@ -29,13 +29,9 @@ def decompress(path='test.vtp.gz'):
 
 def csv2list(path):
     """Convert CSV-file to a nested list of strings."""
-    ifile = open(path, 'rb')
-    reader = csv.reader(ifile)
-    csvlist = []
-    for row in reader:
-        csvlist.append(row)
-    ifile.close
-    return csvlist
+    with open(path, 'rb') as f:
+        reader = csv.reader(f)
+        return list(reader)
 
 
 def listdir(path, match='*', dirname=False, extension=False):
