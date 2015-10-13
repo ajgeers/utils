@@ -203,16 +203,6 @@ def delaunay3d(points):
     return surface.GetOutput()
 
 
-def extractboundaryedge(surface, feature_edges=False):
-    """Extract boundary edges of a surface mesh."""
-    edge = vtk.vtkFeatureEdges()
-    edge.SetInput(surface)
-    if not feature_edges:
-        edge.FeatureEdgesOff()
-    edge.Update()
-    return edge.GetOutput()
-
-
 def extractcells(polydata, idlist=[0, 1, 2]):
     """Extract cells from polydata whose cellid is in idlist."""
     cellids = vtk.vtkIdList()  # specify cellids
@@ -244,6 +234,19 @@ def extractedges(surface):
     extractor.SetInput(surface)
     extractor.Update()
     return extractor.GetOutput()
+
+
+def extractfeatureedges(surface, boundary_edges=True,
+                        feature_edges=False, feature_angle=30):
+    """Extract feature edges of a surface mesh. Defaults to extracting boundary
+    edges."""
+    edge = vtk.vtkFeatureEdges()
+    edge.SetInput(surface)
+    edge.BoundaryEdgesOn() if boundary_edges else edge.BoundaryEdgesOff()
+    edge.FeatureEdgesOn() if feature_edges else edge.FeatureEdgesOff()
+    edge.SetFeatureAngle(feature_angle)
+    edge.Update()
+    return edge.GetOutput()
 
 
 def extractlargestregion(polydata):
