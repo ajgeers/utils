@@ -27,11 +27,35 @@ def decompress(path='test.vtp.gz'):
             ofile.write(ifile.read())
 
 
-def csv2list(path):
+def csv_to_list(path):
     """Convert CSV-file to a nested list of strings."""
     with open(path, 'rb') as f:
         reader = csv.reader(f)
         return list(reader)
+
+
+def csv_to_dict(path):
+    """Create nested dictionary from csv file. Workaround for when pandas is
+    unavailable and you want to select 2D array elements with row and column
+    names rather than integers.
+
+    * First row is used for column names
+    * First column is used for row names.
+    * Access data from dictionary x using x['rowname']['columnname']
+    * Extract all row names with x.keys()
+    * Extract all column names with x.values()[0].keys()
+
+    Note: Expects '\n' as newline character.
+
+    """
+    x = {}
+    with open(path, 'rb') as f:
+        header = f.next().strip().split(',')[1:]
+        for line in f:
+            row = line.strip().split(',')
+            x[row[0]] = dict(
+                (header[i], v) for i, v in enumerate(row[1:]))
+    return x
 
 
 def listdir(path, match='*', dirname=False, extension=False):
