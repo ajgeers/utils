@@ -95,7 +95,7 @@ def readvtk(path, datatype='polydata'):
 
     """
     if datatype=='imagedata':
-        reader = vtk.vtkImageDataReader()
+        reader = vtk.vtkStructuredPointsReader()
     elif datatype=='polydata':
         reader = vtk.vtkPolyDataReader()
     elif datatype=='unstructeredgrid':
